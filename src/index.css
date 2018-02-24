@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.btn {
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+.btn:hover {
+    background-color: lightgray;
+}
+
+.btn-delete {
+    color: tomato;
+    padding-left: 0.5rem;
+    margin-left: 0.3em;
+}
+.chk-isCompleted {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.chk-isCompleted:checked + input.todo {
+    color: grey;
+    text-decoration: line-through;
+}
+
+input.todo {
+    border: none;
+}
