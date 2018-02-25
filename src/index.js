@@ -147,7 +147,7 @@ class App extends React.Component {
 const dummyData = [
     { id: 1, todo: "clean room", isCompleted: false },
     { id: 2, todo: "fix roof", isCompleted: true },
-    { id: 3, todo: "learn react1", isCompleted: false }
+    { id: 3, todo: "learn react12", isCompleted: false }
 ];
 
 render(
