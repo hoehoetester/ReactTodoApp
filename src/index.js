@@ -103,13 +103,6 @@ class App extends React.Component {
                         add
                     </button>
                 </form>
-                {/*
-                <select onChange={this.handleFilterChanged.bind(this)}>
-                    <option value="All">All</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Incompleted">Incompleted</option>
-                </select>
-                */}
                 <p>{filterdTodos.length} todo(s)</p>
                 <ul>
                     {filterdTodos.map(todo => {
