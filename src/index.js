@@ -2,139 +2,106 @@ import React from "react";
 import { render } from "react-dom";
 import TodoFilter from "./TodoFilter";
 import TodoForm from "./TodoForm";
+import TodoList from "./TodoList";
 
 import styles from "./index.css";
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
+class TodoApp extends React.Component {
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            todos: props.dummyData,
-            filter: "All"
-        };
-    }
+    this.state = {
+      todos: props.dummyData,
+      filter: "All"
+    };
+  }
 
-    updateTodos(newTodos) {
-        this.setState({
-            todos: newTodos
-        });
-    }
+  updateTodos(newTodos) {
+    this.setState({
+      todos: newTodos
+    });
+  }
 
-    handleAdd(value) {
-        const newTodo = {
-            id: new Date().getTime(),
-            todo: value,
-            isCompleted: false
-        };
+  handleChangeFilter(e) {
+    this.setState({
+      filter: e.target.value
+    });
+  }
 
-        this.updateTodos([...this.state.todos, newTodo]);
-    }
+  handleAddTodo(value) {
+    const newTodo = {
+      id: new Date().getTime(),
+      todo: value,
+      isCompleted: false
+    };
 
-    handleDelete(id) {
-        var newTodos = this.state.todos.filter(todo => id !== todo.id);
+    this.updateTodos([...this.state.todos, newTodo]);
+  }
 
-        this.updateTodos(newTodos);
-    }
+  handleDeleteTodo(id) {
+    var newTodos = this.state.todos.filter(todo => id !== todo.id);
 
-    handleFilterChanged(e) {
-        this.setState({
-            filter: e.target.value
-        });
-    }
+    this.updateTodos(newTodos);
+  }
 
-    handleToggleComplet(id) {
-        const newTodos = this.state.todos.map(todo => {
-            if (todo.id === id) {
-                todo.isCompleted = !todo.isCompleted;
-            }
-            return todo;
-        });
+  handleToggleComplet(id) {
+    const newTodos = this.state.todos.map(todo => {
+      if (todo.id === id) {
+        todo.isCompleted = !todo.isCompleted;
+      }
+      return todo;
+    });
 
-        this.updateTodos(newTodos);
-    }
+    this.updateTodos(newTodos);
+  }
 
-    handleUpdateTodo(id, e) {
-        const updatedValue = e.target.value;
-        const newTodos = this.state.todos.map(todo => {
-            if (todo.id === id) {
-                todo.todo = updatedValue;
-            }
-            return todo;
-        });
-        this.updateTodos(newTodos);
-    }
+  handleUpdateTodo(id, value) {
+    const newTodos = this.state.todos.map(todo => {
+      if (todo.id === id) {
+        todo.todo = value;
+      }
+      return todo;
+    });
+    this.updateTodos(newTodos);
+  }
 
-    render() {
-        const filterdTodos = this.state.todos.filter(todo => {
-            const filter = this.state.filter;
-            switch (filter) {
-                case "All":
-                    return todo;
-                case "Completed":
-                    return todo.isCompleted;
-                case "Incompleted":
-                    return !todo.isCompleted;
-                default:
-                    return todo;
-            }
-        });
+  render() {
+    const filterdTodos = this.state.todos.filter(todo => {
+      const filter = this.state.filter;
+      switch (filter) {
+        case "All":
+          return todo;
+        case "Completed":
+          return todo.isCompleted;
+        case "Incompleted":
+          return !todo.isCompleted;
+        default:
+          return todo;
+      }
+    });
 
-        return (
-            <div>
-                <TodoFilter
-                    changeFilter={this.handleFilterChanged.bind(this)}
-                />
-
-                <TodoForm submitForm={this.handleAdd.bind(this)} />
-                <p>{filterdTodos.length} todo(s)</p>
-                <ul>
-                    {filterdTodos.map(todo => {
-                        return (
-                            <li key={todo.id}>
-                                <input
-                                    type="checkbox"
-                                    className="chk-isCompleted"
-                                    checked={todo.isCompleted}
-                                    onChange={() => {
-                                        this.handleToggleComplet(todo.id);
-                                    }}
-                                />
-                                <input
-                                    className="todo"
-                                    ref={el => {
-                                        this.todoInput = el;
-                                    }}
-                                    defaultValue={todo.todo}
-                                    onChange={e => {
-                                        this.handleUpdateTodo(todo.id, e);
-                                    }}
-                                />
-
-                                <button
-                                    className="btn btn-delete"
-                                    onClick={() => {
-                                        this.handleDelete(todo.id);
-                                    }}
-                                >
-                                    &times;
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
-    }
+    return (
+      <div>
+        <TodoForm submitForm={this.handleAddTodo.bind(this)} />
+        <TodoFilter changeFilter={this.handleChangeFilter.bind(this)} />
+        <TodoList
+          items={filterdTodos}
+          toggleComplete={this.handleToggleComplet.bind(this)}
+          updateTodo={this.handleUpdateTodo.bind(this)}
+          deleteTodo={this.handleDeleteTodo.bind(this)}
+        />
+      </div>
+    );
+  }
 }
 
 const dummyData = [
-    { id: 1, todo: "clean room", isCompleted: false },
-    { id: 2, todo: "fix roof", isCompleted: true },
-    { id: 3, todo: "learn react", isCompleted: false }
+  { id: 1, todo: "clean room", isCompleted: false },
+  { id: 2, todo: "change lightbulb", isCompleted: true },
+  { id: 3, todo: "learn react", isCompleted: false }
 ];
 
 render(
-    <App dummyData={dummyData} style={styles} />,
-    document.getElementById("root")
+  <TodoApp dummyData={dummyData} style={styles} />,
+  document.getElementById("root")
 );
