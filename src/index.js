@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
+import TodoFilter from "./TodoFilter";
 
 import styles from "./index.css";
 
@@ -43,6 +44,7 @@ class App extends React.Component {
     }
 
     handleFilterChanged(e) {
+        debugger;
         this.setState({
             filter: e.target.value
         });
@@ -87,6 +89,9 @@ class App extends React.Component {
 
         return (
             <div>
+                <TodoFilter
+                    changeFilter={this.handleFilterChanged.bind(this)}
+                />
                 <form onSubmit={this.handleAdd.bind(this)}>
                     <input
                         type="text"
@@ -98,11 +103,13 @@ class App extends React.Component {
                         add
                     </button>
                 </form>
+                {/*
                 <select onChange={this.handleFilterChanged.bind(this)}>
                     <option value="All">All</option>
                     <option value="Completed">Completed</option>
                     <option value="Incompleted">Incompleted</option>
                 </select>
+                */}
                 <p>{filterdTodos.length} todo(s)</p>
                 <ul>
                     {filterdTodos.map(todo => {
@@ -147,7 +154,7 @@ class App extends React.Component {
 const dummyData = [
     { id: 1, todo: "clean room", isCompleted: false },
     { id: 2, todo: "fix roof", isCompleted: true },
-    { id: 3, todo: "learn react123", isCompleted: false }
+    { id: 3, todo: "learn react", isCompleted: false }
 ];
 
 render(
