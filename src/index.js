@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import TodoFilter from "./TodoFilter";
+import TodoForm from "./TodoForm";
 
 import styles from "./index.css";
 
@@ -20,21 +21,14 @@ class App extends React.Component {
         });
     }
 
-    handleAdd(e) {
-        e.preventDefault();
-        const inputValue = this.textInput.value;
-        if (inputValue === "") {
-            return false;
-        }
+    handleAdd(value) {
         const newTodo = {
             id: new Date().getTime(),
-            todo: this.textInput.value,
+            todo: value,
             isCompleted: false
         };
 
         this.updateTodos([...this.state.todos, newTodo]);
-        this.textInput.value = "";
-        this.textInput.focus();
     }
 
     handleDelete(id) {
@@ -44,7 +38,6 @@ class App extends React.Component {
     }
 
     handleFilterChanged(e) {
-        debugger;
         this.setState({
             filter: e.target.value
         });
@@ -92,17 +85,8 @@ class App extends React.Component {
                 <TodoFilter
                     changeFilter={this.handleFilterChanged.bind(this)}
                 />
-                <form onSubmit={this.handleAdd.bind(this)}>
-                    <input
-                        type="text"
-                        ref={input => {
-                            this.textInput = input;
-                        }}
-                    />
-                    <button type="submit" className="btn">
-                        add
-                    </button>
-                </form>
+
+                <TodoForm submitForm={this.handleAdd.bind(this)} />
                 <p>{filterdTodos.length} todo(s)</p>
                 <ul>
                     {filterdTodos.map(todo => {
